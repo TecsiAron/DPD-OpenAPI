@@ -1,0 +1,1827 @@
+openapi: "3.0.0"
+info:
+  version: "1"
+  title: ""
+  description: ""
+paths:
+  /shipment:
+    post:
+      operationId: "CreateShipment"
+      description: ""
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateShipmentRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateShipmentResponse"
+  /location/country:
+    post:
+      operationId: "FindCountry"
+      description: ""
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FindCountryRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindCountryResponse"
+  /services:
+    post:
+      operationId: "Services"
+      description: ""
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServicesRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServicesResponse"
+  /shipment/barcode-information:
+    post:
+      operationId: "BarcodeInformationRequest"
+      description: ""
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BarcodeInformationRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BarcodeInformationResponse"
+  /print:
+    post:
+      operationId: "Print"
+      description: ""
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrintRequest"
+      responses:
+        200:
+          description: "success"
+          content:
+            application/pdf:
+              schema:
+                type: "string"
+        201:
+          description: "error"
+          content:
+            application/json:
+              schema:
+                type: "string"
+  /shipment/info:
+    post:
+      operationId: "ShipmentInfo"
+      description: ""
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipmentInformationRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShipmentInformationResponse"
+  /location/state/csv/{countryId}:
+    post:
+      operationId: "GetAllStates"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "countryId"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetAllStatesRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/csv:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/State"
+  /track:
+    post:
+      operationId: "Track"
+      description: ""
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrackRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrackResponse"
+  /location/site/csv/{countryId}:
+    get:
+      operationId: "GetSites"
+      description: ""
+      parameters:
+        - in: "path"
+          name: "countryId"
+          required: true
+          schema:
+            type: "string"
+        - in: "query"
+          name: "password"
+          schema:
+            type: "string"
+        - in: "query"
+          name: "username"
+          schema:
+            type: "string"
+      responses:
+        200:
+          description: ""
+          content:
+            application/csv:
+              schema:
+                type: "string"
+  /location/office/nearest-offices:
+    post:
+      operationId: "FindNearestOffices"
+      description: ""
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FindNearestOfficesRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindNearestOfficesResponse"
+  /pickup:
+    post:
+      operationId: "PickupRequest"
+      description: ""
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PickupRequest"
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PickupResponse"
+components:
+  securitySchemes: {}
+  schemas:
+    Error:
+      properties:
+        context:
+          nullable: true
+          type: "string"
+        message:
+          nullable: false
+          type: "string"
+        id:
+          nullable: false
+          type: "string"
+        code:
+          nullable: false
+          type: "integer"
+        component:
+          nullable: false
+          type: "string"
+    ShipmentPrice:
+      properties:
+        amount:
+          nullable: false
+          type: "number"
+        vat:
+          nullable: false
+          type: "number"
+        total:
+          nullable: false
+          type: "number"
+        currency:
+          nullable: false
+          type: "string"
+        details:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ShipmentPriceAmount"
+        amountLocal:
+          nullable: false
+          type: "number"
+        vatLocal:
+          nullable: false
+          type: "number"
+        totalLocal:
+          nullable: false
+          type: "number"
+        currencyLocal:
+          nullable: false
+          type: "string"
+        detailsLocal:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ShipmentPriceAmount"
+        currencyExchangeRateUnit:
+          nullable: false
+          type: "integer"
+        currencyExchangeRate:
+          nullable: false
+          type: "number"
+        returnAmounts:
+          nullable: true
+          type: "string"
+    MoneyTransferPremium:
+      properties:
+        amount:
+          nullable: true
+          type: "number"
+        amountLocal:
+          nullable: true
+          type: "number"
+        payer:
+          nullable: true
+          type: "string"
+    ReturnAmounts:
+      properties:
+        moneyTransfer:
+          nullable: true
+          $ref: "#/components/schemas/MoneyTransferPremium"
+    CreatedShipmentParcel:
+      properties:
+        seqNo:
+          nullable: false
+          type: "integer"
+        id:
+          nullable: false
+          type: "string"
+        externalCarrierId:
+          nullable: true
+          type: "integer"
+        externalCarrierParcelNumber:
+          nullable: true
+          type: "string"
+    CreateShipmentResponse:
+      properties:
+        id:
+          nullable: false
+          type: "string"
+        parcels:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CreatedShipmentParcel"
+        price:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentPrice"
+        pickupDate:
+          nullable: false
+          type: "string"
+        deliveryDeadline:
+          nullable: false
+          type: "string"
+        error:
+          nullable: true
+          $ref: "#/components/schemas/Error"
+    ShipmentPhoneNumber:
+      properties:
+        number:
+          nullable: false
+          type: "string"
+        extension:
+          nullable: true
+          type: "string"
+    ShipmentAddress:
+      properties:
+        countryId:
+          nullable: true
+          type: "integer"
+        stateId:
+          nullable: true
+          type: "string"
+        siteId:
+          nullable: true
+          type: "number"
+        siteType:
+          nullable: true
+          type: "string"
+        siteName:
+          nullable: true
+          type: "string"
+        postCode:
+          nullable: true
+          type: "string"
+        streetId:
+          nullable: true
+          type: "number"
+        streetType:
+          nullable: true
+          type: "string"
+        streetName:
+          nullable: true
+          type: "string"
+        streetNo:
+          nullable: true
+          type: "string"
+        complexId:
+          nullable: true
+          type: "number"
+        complexType:
+          nullable: true
+          type: "string"
+        complexName:
+          nullable: true
+          type: "string"
+        blockNo:
+          nullable: true
+          type: "string"
+        entranceNo:
+          nullable: true
+          type: "string"
+        floorNo:
+          nullable: true
+          type: "string"
+        apartmentNo:
+          nullable: true
+          type: "string"
+        poiId:
+          nullable: true
+          type: "number"
+        addressNote:
+          nullable: true
+          type: "string"
+        addressLine1:
+          nullable: true
+          type: "string"
+        addressLine2:
+          nullable: true
+          type: "string"
+        x:
+          nullable: true
+          type: "number"
+        y:
+          nullable: true
+          type: "number"
+    ShipmentSender:
+      properties:
+        clientId:
+          nullable: true
+          type: "number"
+        phone1:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentPhoneNumber"
+        phone2:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentPhoneNumber"
+        phone3:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentPhoneNumber"
+        clientName:
+          nullable: false
+          type: "string"
+        contactName:
+          nullable: true
+          type: "string"
+        email:
+          nullable: true
+          type: "string"
+        privatePerson:
+          nullable: true
+          type: "boolean"
+        address:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentAddress"
+        dropoffOfficeId:
+          nullable: true
+          type: "integer"
+        dropoffGeoPUDOId:
+          nullable: true
+          type: "string"
+    ShipmentRecipient:
+      properties:
+        clientId:
+          nullable: true
+          type: "number"
+        phone1:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentPhoneNumber"
+        phone2:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentPhoneNumber"
+        phone3:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentPhoneNumber"
+        clientName:
+          nullable: false
+          type: "string"
+        objectName:
+          nullable: true
+          type: "string"
+        contactName:
+          nullable: true
+          type: "string"
+        email:
+          nullable: true
+          type: "string"
+        privatePerson:
+          nullable: true
+          type: "boolean"
+        address:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentAddress"
+        pickupOfficeId:
+          nullable: true
+          type: "integer"
+        pickupGeoPUDOId:
+          nullable: true
+          type: "string"
+    ShipmentParcel:
+      properties:
+        id:
+          nullable: true
+          type: "string"
+        seqNo:
+          nullable: true
+          type: "integer"
+        packageUniqueNumber:
+          nullable: true
+          type: "number"
+        size:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentParcelSize"
+        weight:
+          nullable: true
+          type: "number"
+        ref1:
+          nullable: true
+          type: "string"
+        ref2:
+          nullable: true
+          type: "string"
+        pickupExternalCarrierParcelNumber:
+          nullable: true
+          $ref: "#/components/schemas/ExternalCarrierParcelNumber"
+        deliveryExternalCarrierParcelNumber:
+          nullable: true
+          $ref: "#/components/schemas/ExternalCarrierParcelNumber"
+    ExternalCarrierParcelNumber:
+      properties:
+        externalCarrier:
+          nullable: false
+          type: "string"
+        parcelNumber:
+          nullable: false
+          type: "string"
+    ShipmentParcelSize:
+      properties:
+        width:
+          nullable: false
+          type: "integer"
+        depth:
+          nullable: false
+          type: "integer"
+        height:
+          nullable: false
+          type: "integer"
+    ShipmentContent:
+      properties:
+        parcelsCount:
+          nullable: true
+          type: "integer"
+        totalWeight:
+          nullable: true
+          type: "number"
+        contents:
+          nullable: false
+          type: "string"
+        package:
+          nullable: false
+          type: "string"
+        documents:
+          nullable: true
+          type: "boolean"
+        palletized:
+          nullable: true
+          type: "boolean"
+        parcels:
+          nullable: true
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ShipmentParcel"
+        pendingParcels:
+          nullable: true
+          type: "boolean"
+        exciseGoods:
+          nullable: true
+          type: "boolean"
+    CreateShipmentRequest:
+      properties:
+        userName:
+          nullable: false
+          type: "string"
+        password:
+          nullable: false
+          type: "string"
+        language:
+          nullable: true
+          type: "string"
+        clientSystemId:
+          nullable: true
+          type: "number"
+        sender:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentSender"
+        recipient:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentRecipient"
+        service:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentService"
+        content:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentContent"
+        payment:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentPayment"
+        shipmentNote:
+          nullable: true
+          type: "string"
+        ref1:
+          nullable: true
+          type: "string"
+        ref2:
+          nullable: true
+          type: "string"
+        consolidationRef:
+          nullable: true
+          type: "string"
+        requireUnsuccessfulDeliveryStickerImage:
+          nullable: true
+          type: "boolean"
+    ShipmentPayment:
+      properties:
+        courierServicePayer:
+          nullable: false
+          type: "string"
+        declaredValuePayer:
+          nullable: true
+          type: "string"
+        packagePayer:
+          nullable: true
+          type: "string"
+        thirdPartyClientId:
+          nullable: true
+          type: "number"
+        discountCardId:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentDiscountCardId"
+        senderBankAccount:
+          nullable: true
+          $ref: "#/components/schemas/BankAccount"
+        administrativeFee:
+          nullable: true
+          type: "boolean"
+    ShipmentDiscountCardId:
+      properties:
+        contractId:
+          nullable: false
+          type: "number"
+        cardId:
+          nullable: false
+          type: "number"
+    BankAccount:
+      properties:
+        iban:
+          nullable: false
+          type: "string"
+        accountHolder:
+          nullable: false
+          type: "string"
+    ShipmentService:
+      properties:
+        pickupDate:
+          nullable: true
+          type: "string"
+        autoAdjustPickupDate:
+          nullable: true
+          type: "boolean"
+        serviceId:
+          nullable: false
+          type: "integer"
+        additionalServices:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentAdditionalServices"
+        deferredDays:
+          nullable: true
+          type: "integer"
+        saturdayDelivery:
+          nullable: true
+          type: "boolean"
+    ShipmentCODAdditionalService:
+      properties:
+        amount:
+          nullable: false
+          type: "number"
+        currencyCode:
+          nullable: true
+          type: "string"
+        processingType:
+          nullable: true
+          type: "string"
+        payoutToThirdParty:
+          nullable: true
+          type: "boolean"
+        payoutToLoggedClient:
+          nullable: true
+          type: "boolean"
+        includeShippingPrice:
+          nullable: true
+          type: "boolean"
+        cardPaymentForbidden:
+          nullable: true
+          type: "boolean"
+    ShipmentOBPD:
+      properties:
+        option:
+          nullable: false
+          type: "string"
+        returnShipmentServiceId:
+          nullable: false
+          type: "integer"
+        returnShipmentPayer:
+          nullable: false
+          type: "string"
+    ShipmentDeclaredValueAdditionalService:
+      properties:
+        amount:
+          nullable: false
+          type: "number"
+        fragile:
+          nullable: true
+          type: "boolean"
+        ignoreIfNotApplicable:
+          nullable: true
+          type: "boolean"
+    ShipmentRODAdditionalService:
+      properties:
+        enabled:
+          nullable: false
+          type: "boolean"
+        comment:
+          nullable: true
+          type: "string"
+        returnToClientId:
+          nullable: true
+          type: "integer"
+        returnToOfficeId:
+          nullable: true
+          type: "integer"
+        thirdPartyPayer:
+          nullable: true
+          type: "boolean"
+    ShipmentReturnReceiptAdditionalService:
+      properties:
+        enabled:
+          nullable: false
+          type: "boolean"
+        returnToClientId:
+          nullable: true
+          type: "number"
+        returnToOfficeId:
+          nullable: true
+          type: "integer"
+        thirdPartyPayer:
+          nullable: true
+          type: "boolean"
+    ShipmentSWAPAdditionalService:
+      properties:
+        serviceId:
+          nullable: false
+          type: "integer"
+        parcelsCount:
+          nullable: false
+          type: "integer"
+        declaredValue:
+          nullable: true
+          type: "number"
+        fragile:
+          nullable: true
+          type: "boolean"
+        returnToOfficeId:
+          nullable: true
+          type: "integer"
+        thirdPartyPayer:
+          nullable: true
+          type: "boolean"
+    ShipmentReturnVoucherAdditionalService:
+      properties:
+        serviceId:
+          nullable: false
+          type: "integer"
+        payer:
+          nullable: false
+          type: "string"
+        validityPeriod:
+          nullable: false
+          type: "integer"
+    ShipmentReturnAdditionalServices:
+      properties:
+        rod:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentRODAdditionalService"
+        returnReceipt:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentReturnReceiptAdditionalService"
+        swap:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentSWAPAdditionalService"
+        rop:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentROPAdditionalService"
+        returnVoucher:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentReturnVoucherAdditionalService"
+        sendBackClientId:
+          nullable: true
+          type: "number"
+    ShipmentROPAdditionalServiceLine:
+      properties:
+        serviceId:
+          nullable: false
+          type: "integer"
+        parcelsCount:
+          nullable: false
+          type: "integer"
+    ShipmentROPAdditionalService:
+      properties:
+        pallets:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ShipmentROPAdditionalServiceLine"
+        thirdPartyPayer:
+          nullable: true
+          type: "boolean"
+    ShipmentAdditionalServices:
+      properties:
+        cod:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentCODAdditionalService"
+        obpd:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentOBPD"
+        declaredValue:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentDeclaredValueAdditionalService"
+        fixedTimeDelivery:
+          nullable: true
+          type: "integer"
+        returns:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentReturnAdditionalServices"
+        specialDeliveryId:
+          nullable: true
+          type: "integer"
+        deliveryToFloor:
+          nullable: true
+          type: "integer"
+    FindCountryRequest:
+      properties:
+        userName:
+          nullable: false
+          type: "string"
+        password:
+          nullable: false
+          type: "string"
+        language:
+          nullable: true
+          type: "string"
+        clientSystemId:
+          nullable: true
+          type: "number"
+        name:
+          nullable: true
+          type: "string"
+        isoAlpha2:
+          nullable: true
+          type: "string"
+        isoAlpha3:
+          nullable: true
+          type: "string"
+    AddressNomenclatureType:
+      properties:
+        name:
+          nullable: false
+          type: "string"
+        nameEn:
+          nullable: false
+          type: "string"
+    Country:
+      properties:
+        id:
+          nullable: false
+          type: "integer"
+        name:
+          nullable: false
+          type: "string"
+        nameEn:
+          nullable: false
+          type: "string"
+        isoAlpha2:
+          nullable: false
+          type: "string"
+        isoAlpha3:
+          nullable: false
+          type: "string"
+        postCodeFormats:
+          nullable: false
+          type: "array"
+          items:
+            type: "string"
+        requireState:
+          nullable: false
+          type: "string"
+        addressType:
+          nullable: false
+          type: "integer"
+        currencyCode:
+          nullable: false
+          type: "string"
+        defaultOfficeId:
+          nullable: false
+          type: "string"
+        streetTypes:
+          nullable: false
+          $ref: "#/components/schemas/AddressNomenclatureType"
+        complexTypes:
+          nullable: false
+          $ref: "#/components/schemas/AddressNomenclatureType"
+        siteNomen:
+          nullable: false
+          type: "string"
+    FindCountryResponse:
+      properties:
+        countries:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Country"
+        error:
+          nullable: false
+          $ref: "#/components/schemas/Error"
+    GetAllStatesRequest:
+      properties:
+        userName:
+          nullable: false
+          type: "string"
+        password:
+          nullable: false
+          type: "string"
+        language:
+          nullable: true
+          type: "string"
+        clientSystemId:
+          nullable: false
+          type: "number"
+    State:
+      properties:
+        id:
+          nullable: false
+          type: "string"
+        name:
+          nullable: false
+          type: "string"
+        nameEn:
+          nullable: false
+          type: "string"
+        stateAlpha:
+          nullable: false
+          type: "string"
+        countryId:
+          nullable: false
+          type: "integer"
+    AdditionalCourierService:
+      properties:
+        allowance:
+          nullable: false
+          type: "string"
+    AdditionalCourierServices:
+      properties:
+        cod:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+        obpd:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+        declaredValue:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+        fixedTimeDelivery:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+        specialDelivery:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+        deliveryToFloor:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+        rod:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+        returnReceipt:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+        swap:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+        rop:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+        returnVoucher:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierService"
+    CourierService:
+      properties:
+        id:
+          nullable: false
+          type: "integer"
+        name:
+          nullable: false
+          type: "string"
+        nameEn:
+          nullable: false
+          type: "string"
+        additionalServices:
+          nullable: false
+          $ref: "#/components/schemas/AdditionalCourierServices"
+        cargoType:
+          nullable: false
+          type: "string"
+        requireParcelWeight:
+          nullable: false
+          type: "boolean"
+        requireParcelSize:
+          nullable: false
+          type: "boolean"
+    ServicesResponse:
+      properties:
+        services:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CourierService"
+        error:
+          nullable: false
+          $ref: "#/components/schemas/Error"
+    ServicesRequest:
+      properties:
+        userName:
+          nullable: false
+          type: "string"
+        password:
+          nullable: false
+          type: "string"
+        language:
+          nullable: true
+          type: "string"
+        clientSystemId:
+          nullable: true
+          type: "number"
+        date:
+          nullable: true
+          type: "string"
+    ShipmentParcelRef:
+      properties:
+        id:
+          nullable: true
+          type: "string"
+        externalCarrierParcelNumber:
+          nullable: true
+          type: "string"
+        fullBarcode:
+          nullable: true
+          type: "string"
+    BarcodeInformationRequest:
+      properties:
+        userName:
+          nullable: false
+          type: "string"
+        password:
+          nullable: false
+          type: "string"
+        language:
+          nullable: true
+          type: "string"
+        clientSystemId:
+          nullable: true
+          type: "string"
+        parcel:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentParcelRef"
+    PrimaryShipment:
+      properties:
+        id:
+          nullable: false
+          type: "string"
+        type:
+          nullable: false
+          type: "string"
+    LabelInfo:
+      properties:
+        parcelId:
+          nullable: false
+          type: "string"
+        hubId:
+          nullable: true
+          type: "string"
+        officeId:
+          nullable: true
+          type: "string"
+        officeName:
+          nullable: true
+          type: "string"
+        deadlineDay:
+          nullable: true
+          type: "string"
+        deadlineMonth:
+          nullable: true
+          type: "string"
+        tourId:
+          nullable: true
+          type: "string"
+        fullBarcode:
+          nullable: true
+          type: "string"
+        exportPriority:
+          nullable: true
+          type: "string"
+    BarcodeInformationResponse:
+      properties:
+        labelInfo:
+          nullable: false
+          $ref: "#/components/schemas/LabelInfo"
+        primaryShipment:
+          nullable: false
+          $ref: "#/components/schemas/PrimaryShipment"
+        primaryParcelId:
+          nullable: false
+          type: "string"
+        returnShipmentId:
+          nullable: false
+          type: "string"
+        returnParcelId:
+          nullable: false
+          type: "string"
+        redirectShipmentId:
+          nullable: false
+          type: "string"
+        redirectParcelId:
+          nullable: false
+          type: "string"
+        initialShipmentId:
+          nullable: false
+          type: "string"
+        initialParcelId:
+          nullable: false
+          type: "string"
+        error:
+          nullable: false
+          $ref: "#/components/schemas/Error"
+    ParcelToPrint:
+      properties:
+        parcel:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentParcelRef"
+    PrintRequest:
+      properties:
+        userName:
+          nullable: false
+          type: "string"
+        password:
+          nullable: false
+          type: "string"
+        language:
+          nullable: true
+          type: "string"
+        clientSystemId:
+          nullable: false
+          type: "number"
+        format:
+          nullable: true
+          type: "string"
+        paperSize:
+          nullable: true
+          type: "string"
+        parcels:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ParcelToPrint"
+        printerName:
+          nullable: true
+          type: "string"
+        dpi:
+          nullable: true
+          type: "string"
+        additionalWaybillSenderCopy:
+          nullable: true
+          type: "string"
+    ShipmentInformationRequest:
+      properties:
+        userName:
+          nullable: false
+          type: "string"
+        password:
+          nullable: false
+          type: "string"
+        language:
+          nullable: true
+          type: "string"
+        clientSystemId:
+          nullable: false
+          type: "number"
+        shipmentIds:
+          nullable: false
+          type: "array"
+          items:
+            type: "string"
+    ShipmentDelivery:
+      properties:
+        deadline:
+          nullable: true
+          type: "string"
+        deliveryDateTime:
+          nullable: true
+          type: "string"
+        consignee:
+          nullable: true
+          type: "string"
+        deliveryNote:
+          nullable: true
+          type: "string"
+    Address:
+      properties:
+        countryId:
+          nullable: true
+          type: "integer"
+        stateId:
+          nullable: true
+          type: "string"
+        siteId:
+          nullable: true
+          type: "number"
+        siteType:
+          nullable: true
+          type: "string"
+        siteName:
+          nullable: true
+          type: "string"
+        postCode:
+          nullable: true
+          type: "string"
+        streetId:
+          nullable: true
+          type: "number"
+        streetType:
+          nullable: true
+          type: "string"
+        streetName:
+          nullable: true
+          type: "string"
+        streetNo:
+          nullable: true
+          type: "string"
+        complexId:
+          nullable: true
+          type: "number"
+        complexType:
+          nullable: false
+          type: "string"
+        complexName:
+          nullable: true
+          type: "string"
+        blockNo:
+          nullable: true
+          type: "string"
+        entranceNo:
+          nullable: true
+          type: "string"
+        floorNo:
+          nullable: true
+          type: "string"
+        apartmentNo:
+          nullable: true
+          type: "string"
+        poiId:
+          nullable: true
+          type: "number"
+        addressNote:
+          nullable: true
+          type: "string"
+        addressLine1:
+          nullable: true
+          type: "string"
+        addressLine2:
+          nullable: true
+          type: "string"
+        x:
+          nullable: true
+          type: "number"
+        y:
+          nullable: true
+          type: "number"
+        fullAddressString:
+          nullable: false
+          type: "string"
+        siteAddressString:
+          nullable: false
+          type: "string"
+        localAddressString:
+          nullable: false
+          type: "string"
+    ShipmentInformationParty:
+      properties:
+        clientId:
+          nullable: false
+          type: "number"
+        clientName:
+          nullable: false
+          type: "string"
+        objectName:
+          nullable: true
+          type: "string"
+        contactName:
+          nullable: true
+          type: "string"
+        address:
+          nullable: false
+          $ref: "#/components/schemas/Address"
+        email:
+          nullable: true
+          type: "string"
+        privatePerson:
+          nullable: false
+          type: "boolean"
+    Shipment:
+      properties:
+        id:
+          nullable: false
+          type: "string"
+        sender:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentInformationParty"
+        recipient:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentInformationParty"
+        service:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentService"
+        content:
+          nullable: false
+          $ref: "#/components/schemas/Content"
+        payment:
+          nullable: false
+          $ref: "#/components/schemas/Payment"
+        shipmentNote:
+          nullable: true
+          type: "string"
+        ref1:
+          nullable: true
+          type: "string"
+        ref2:
+          nullable: true
+          type: "string"
+        price:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentPrice"
+        delivery:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentDelivery"
+        primaryShipment:
+          nullable: false
+          $ref: "#/components/schemas/PrimaryShipment"
+        returnShipmentId:
+          nullable: true
+          type: "string"
+        redirectShipmentId:
+          nullable: true
+          type: "string"
+        pendingShipment:
+          nullable: false
+          type: "boolean"
+    Parcel:
+      properties:
+        id:
+          nullable: false
+          type: "string"
+        seqNo:
+          nullable: false
+          type: "integer"
+        packageUniqueNumber:
+          nullable: false
+          type: "number"
+        declaredSize:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentParcelSize"
+        measuredSize:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentParcelSize"
+        calculationSize:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentParcelSize"
+        declaredWeight:
+          nullable: false
+          type: "number"
+        measuredWeight:
+          nullable: false
+          type: "number"
+        calculationWeight:
+          nullable: false
+          type: "number"
+        externalCarrierParcelNumbers:
+          nullable: false
+          type: "array"
+          items:
+            type: "string"
+        baseType:
+          nullable: false
+          type: "string"
+        size:
+          nullable: false
+          type: "string"
+    Content:
+      properties:
+        parcelsCount:
+          nullable: false
+          type: "integer"
+        declaredWeight:
+          nullable: false
+          type: "number"
+        measuredWeight:
+          nullable: false
+          type: "number"
+        calculationWeight:
+          nullable: false
+          type: "number"
+        contents:
+          nullable: false
+          type: "string"
+        package:
+          nullable: false
+          type: "string"
+        documents:
+          nullable: false
+          type: "boolean"
+        palletized:
+          nullable: false
+          type: "boolean"
+        parcels:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Parcel"
+        pendingParcels:
+          nullable: false
+          type: "boolean"
+    Payment:
+      properties:
+        courierServicePayer:
+          nullable: false
+          type: "string"
+        declaredValuePayer:
+          nullable: true
+          type: "string"
+        packagePayer:
+          nullable: true
+          type: "string"
+        thirdPartyClientId:
+          nullable: true
+          type: "number"
+        discountCardId:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentDiscountCardId"
+        codPayment:
+          nullable: true
+          $ref: "#/components/schemas/CODPayment"
+    CODPayment:
+      properties:
+        date:
+          nullable: false
+          type: "string"
+        totalPayedOutAmount:
+          nullable: false
+          type: "number"
+    ShipmentInformationResponse:
+      properties:
+        shipments:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Shipment"
+        error:
+          nullable: false
+          $ref: "#/components/schemas/Error"
+    TrackedParcelOperationAdditionalInfoPredict:
+      properties:
+        predictedVisitDateTimeFrom:
+          nullable: false
+          type: "string"
+        predictedVisitDateTimeTo:
+          nullable: false
+          type: "string"
+        includedDelayInMinutes:
+          nullable: true
+          type: "string"
+        canceled:
+          nullable: false
+          type: "boolean"
+    TrackedParcelOperationAdditionalInfo:
+      properties:
+        officeURL:
+          nullable: true
+          type: "string"
+        geoPUDOId:
+          nullable: true
+          type: "string"
+        predict:
+          nullable: true
+          type: "array"
+          items:
+            $ref: "#/components/schemas/TrackedParcelOperationAdditionalInfoPredict"
+    TrackedParcelOperation:
+      properties:
+        dateTime:
+          nullable: false
+          type: "string"
+        operationCode:
+          nullable: false
+          type: "integer"
+        place:
+          nullable: true
+          type: "string"
+        description:
+          nullable: false
+          type: "string"
+        comment:
+          nullable: true
+          type: "string"
+        exceptionCodes:
+          nullable: true
+          type: "array"
+          items:
+            type: "string"
+        returnShipmentId:
+          nullable: true
+          type: "string"
+        redirectShipmentId:
+          nullable: true
+          type: "string"
+        consignee:
+          nullable: true
+          type: "string"
+        podImageURL:
+          nullable: true
+          type: "string"
+        additionalInfo:
+          nullable: false
+          $ref: "#/components/schemas/TrackedParcelOperationAdditionalInfo"
+    TrackedParcel:
+      properties:
+        parcelId:
+          nullable: false
+          type: "string"
+        externalCarrierParcelNumbers:
+          nullable: true
+          type: "array"
+          items:
+            type: "string"
+        operations:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/TrackedParcelOperation"
+        externalCarrierParcelNumbersDetails:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ExternalCarrierParcelNumberDetails"
+        error:
+          nullable: false
+          $ref: "#/components/schemas/Error"
+    ExternalCarrierParcelNumberDetails:
+      properties:
+        externalCarrierId:
+          nullable: false
+          type: "integer"
+        externalCarrierName:
+          nullable: false
+          type: "string"
+        trackAndTraceUrl:
+          nullable: true
+          type: "string"
+    TrackRequest:
+      properties:
+        userName:
+          nullable: false
+          type: "string"
+        password:
+          nullable: false
+          type: "string"
+        language:
+          nullable: true
+          type: "string"
+        clientSystemId:
+          nullable: false
+          type: "number"
+        parcels:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ShipmentParcelRef"
+        lastOperationOnly:
+          nullable: true
+          type: "boolean"
+    TrackResponse:
+      properties:
+        parcels:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/TrackedParcel"
+        error:
+          nullable: false
+          $ref: "#/components/schemas/Error"
+    OfficeWorkingTimeSchedule:
+      properties:
+        date:
+          nullable: false
+          type: "string"
+        workingTimeFrom:
+          nullable: false
+          type: "string"
+        workingTimeTo:
+          nullable: false
+          type: "string"
+        sameDayDepartureCutoff:
+          nullable: false
+          type: "string"
+        standardSchedule:
+          nullable: false
+          type: "string"
+    OfficeResult:
+      properties:
+        id:
+          nullable: false
+          type: "integer"
+        name:
+          nullable: false
+          type: "string"
+        nameEn:
+          nullable: false
+          type: "string"
+        siteId:
+          nullable: false
+          type: "string"
+        address:
+          nullable: false
+          $ref: "#/components/schemas/Address"
+        workingTimeFrom:
+          nullable: false
+          type: "string"
+        workingTimeTo:
+          nullable: false
+          type: "string"
+        workingTimeHalfFrom:
+          nullable: false
+          type: "string"
+        workingTimeHalfTo:
+          nullable: false
+          type: "string"
+        workingTimeDayOffFrom:
+          nullable: false
+          type: "string"
+        workingTimeDayOffTo:
+          nullable: false
+          type: "string"
+        sameDayDepartureCutoff:
+          nullable: false
+          type: "string"
+        sameDayDepartureCutoffHalf:
+          nullable: false
+          type: "string"
+        sameDayDepartureCutoffDayOff:
+          nullable: false
+          type: "string"
+        maxParcelDimensions:
+          nullable: false
+          type: "string"
+        maxParcelWeight:
+          nullable: false
+          type: "number"
+        type:
+          nullable: false
+          type: "string"
+        nearbyOfficeId:
+          nullable: false
+          type: "integer"
+        workingTimeSchedule:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OfficeWorkingTimeSchedule"
+        palletOffice:
+          nullable: false
+          type: "boolean"
+        cardPaymentAllowed:
+          nullable: false
+          type: "boolean"
+        cashPaymentAllowed:
+          nullable: false
+          type: "boolean"
+        validFrom:
+          nullable: false
+          type: "string"
+        validTo:
+          nullable: false
+          type: "string"
+        cargoTypesAllowed:
+          nullable: false
+          type: "array"
+          items:
+            type: "string"
+        pickUpAllowed:
+          nullable: false
+          type: "boolean"
+        dropOffAllowed:
+          nullable: false
+          type: "boolean"
+        distance:
+          nullable: false
+          type: "integer"
+    FindNearestOfficesRequest:
+      properties:
+        userName:
+          nullable: false
+          type: "string"
+        password:
+          nullable: false
+          type: "string"
+        language:
+          nullable: true
+          type: "string"
+        clientSystemId:
+          nullable: false
+          type: "number"
+        address:
+          nullable: false
+          $ref: "#/components/schemas/ShipmentAddress"
+        distance:
+          nullable: true
+          type: "integer"
+        limit:
+          nullable: true
+          type: "integer"
+        officeType:
+          nullable: true
+          type: "string"
+        officeFeatures:
+          nullable: true
+          type: "array"
+          items:
+            type: "string"
+    FindNearestOfficesResponse:
+      properties:
+        offices:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/OfficeResult"
+        x:
+          nullable: false
+          type: "number"
+        y:
+          nullable: false
+          type: "number"
+        error:
+          nullable: false
+          $ref: "#/components/schemas/Error"
+    ShipmentPriceAmount:
+      properties:
+        amount:
+          nullable: false
+          type: "number"
+        percent:
+          nullable: true
+          type: "number"
+        vatPercent:
+          nullable: false
+          type: "number"
+    PickupRequest:
+      properties:
+        userName:
+          nullable: false
+          type: "string"
+        password:
+          nullable: false
+          type: "string"
+        language:
+          nullable: true
+          type: "string"
+        clientSystemId:
+          nullable: false
+          type: "number"
+        pickupDateTime:
+          nullable: true
+          type: "string"
+        autoAdjustPickupDate:
+          nullable: true
+          type: "boolean"
+        pickupScope:
+          nullable: true
+          type: "string"
+        explicitShipmentIdList:
+          nullable: true
+          type: "array"
+          items:
+            type: "string"
+        visitEndTime:
+          nullable: false
+          type: "string"
+        contactName:
+          nullable: true
+          type: "string"
+        phoneNumber:
+          nullable: true
+          $ref: "#/components/schemas/ShipmentPhoneNumber"
+    PickupOrder:
+      properties:
+        id:
+          nullable: false
+          type: "number"
+        shipmentIds:
+          nullable: false
+          type: "array"
+          items:
+            type: "string"
+        pickupPeriodFrom:
+          nullable: false
+          type: "string"
+        pickupPeriodTo:
+          nullable: false
+          type: "string"
+    PickupResponse:
+      properties:
+        orders:
+          nullable: false
+          type: "array"
+          items:
+            $ref: "#/components/schemas/PickupOrder"
+        error:
+          nullable: false
+          $ref: "#/components/schemas/Error"
